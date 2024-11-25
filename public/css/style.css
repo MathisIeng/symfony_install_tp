@@ -3,3 +3,17 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    background-image: url("https://pokerstarslearn.fr/wp-content/uploads/2023/06/PSCS-9445_PS_Thumbnail_blocker-bets_1200x600_V5.jpg");
+    height: 100vh;
+    background-size: cover;
+}
+
+#titleHome {
+    color: white;
+    font-size: 3rem;
+    margin-left: 80px;
+    font-family: sans-serif;
+    padding-top: 50px;
+}

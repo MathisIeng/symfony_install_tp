@@ -21,7 +21,7 @@ class PokerController
 
         // Permet d'afficher sur notre page la valeur associé à notre URL
         // avec ?age=25 par exemple
-        var_dump($age);
+        echo ("Toi l'utilisateur là, tu as {$age} ans");
 
         // Vérification de l'âge pour afficher un message approprié
         if ($age < 18) {
@@ -29,7 +29,5 @@ class PokerController
         } else {
             return new Response("<p>Bienvenue sur le meilleur site de Poker au monde !</p>");
         }
-
-        return new Response("<h1>Bienvenue à la table de poker !</h1>");
     }
 }
