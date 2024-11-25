@@ -14,6 +14,7 @@ class HomeController {
     public function home() {
         // Retourne une nouvelle instance de la classe Response
         // Qui renvoie du HTML, son contenu est dans la réponse HTTP
-        return new Response('<h1>Bienvenue à tous les loulous, vous êtes sur le site de Siphano !</h1>');
+        return new Response('<h1>Bienvenue à tous les loulous, vous êtes sur le site de Siphano !</h1>
+<img src="https://i1.sndcdn.com/artworks-sPFlujpPgtraa25S-avrBMg-t500x500.jpg"/>');
     }
 }
