@@ -12,7 +12,10 @@ class HomeController extends AbstractController {
     #[Route('/', name: 'home')]
     // On crée une méthode
     public function home() {
-
+        // La méthode render de classe AbstractController récupère
+        // le fichier twig passé en paramètre dans le dossier template
+        // ELle le convertit en HTML et crée une réponse valide
+        // En status HTTP 200, et en body le HTML généré
         return $this->render('home.html.twig');
     }
 }
