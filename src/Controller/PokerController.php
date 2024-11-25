@@ -23,6 +23,17 @@ class PokerController
         // avec ?age=25 par exemple
         var_dump($age);
 
+        // Vérification de l'âge pour afficher un message approprié
+        if ($age < 18) {
+            return new Response("<p>Erreur : Vous devez avoir 18 ans ou plus pour participer au Poker.</p>");
+        } else {
+            return new Response("<p>Bienvenue sur le meilleur site de Poker au monde !</p>");
+        }
+
         return new Response("<h1>Bienvenue à la table de poker !</h1>");
+    }
+
+    public function ageLegal() {
+
     }
 }
