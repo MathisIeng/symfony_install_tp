@@ -32,8 +32,4 @@ class PokerController
 
         return new Response("<h1>Bienvenue à la table de poker !</h1>");
     }
-
-    public function ageLegal() {
-
-    }
 }
