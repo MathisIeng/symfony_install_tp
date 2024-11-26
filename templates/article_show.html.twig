@@ -1,14 +1,19 @@
 {% include "partials/_header.html.twig" %}
 
 <main>
-    {% if article %}
-        <h1>{{ article.title }}</h1>
-        <p>{{ article.content }}</p>
-        <img src="{{ article.image }}"/>
-    {% else %}
-        <p>On a rien trouvé chef</p>
-    {% endif %}
-
+    <ul>
+        {% for i in 1..5 %}
+            <li>
+                {% if article %}
+                    <h1>{{ article.title }}</h1>
+                    <p>{{ article.content }}</p>
+                    <img src="{{ article.image }}" alt="Image de {{ article.title }}">
+                {% else %}
+                    <p>On a rien trouvé chef</p>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 </main>
 
 {% include "partials/_footer.html.twig" %}

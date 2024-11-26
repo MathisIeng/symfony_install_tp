@@ -52,13 +52,12 @@ class ArticleController extends AbstractController
 
     // Dans la même classe on crée une nouvelle méthode qui va afficher
     // l'article en entier selon l'id récupérer dans l'url grâce au GET
-    #[Route('/article', name: 'article_show')]
-    public function showArticle() {
-        // Nouvelle instance Request afin de récupérer les données
-        // de la requête HTTP
-       $request = Request::createFromGlobals();
-       // Création variable $id pour récupérer la donnée GET "id"
-       $id = $request->query->get('id');
+    // On ajoute a notre url {id} afin de récupérer l'id directement
+    // dans mon url sans avoir besoin de faire ?id=""
+    #[Route('/article/{id}', name: 'article_show')]
+    // Par contre je dois bien le rentrer en paramètre de ma méthode
+    // Et symfony s'occupe du reste c'est magique
+    public function showArticle($id) {
 
         $articles = [
             [
