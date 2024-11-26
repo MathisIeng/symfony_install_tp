@@ -115,4 +115,14 @@ class ArticleController extends AbstractController
             'article' => $articleFound
         ]);
     }
+
+    #[Route('/articles/search-results', name: 'article_search_results')]
+    // Nouvelle route et méthode pour utiliser ce que Symfony applique lui même
+    // Sans avoir besoin de crée nous même la nouvelle instance Request, on la met
+        // en paramètre de notre méthode ainsi que notre variable
+    public function articleSearchResults(Request $request) {
+        $search = $request->query->get('search');
+
+        dump($search); die;
+    }
 }
