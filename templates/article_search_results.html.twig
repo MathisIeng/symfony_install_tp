@@ -1,5 +1,13 @@
-{% include "partials/_header.html.twig" %}
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+
+    Résultats de recherche | SIUUUUUU
+
+{% endblock metatitle %}
+
+{% block main %}
 
 <h1 id="titleHome">Toutes tes recherches pour "{{ search }}" :</h1>
 
-{% include "partials/_footer.html.twig" %}
+{% endblock main %}

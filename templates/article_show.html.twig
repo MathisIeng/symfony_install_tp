@@ -1,6 +1,13 @@
-{% include "partials/_header.html.twig" %}
+{% extends 'base.html.twig' %}
 
-<main>
+{% block metatitle %}
+
+    {{ article.title }} | SIUUUUUU
+
+{% endblock metatitle %}
+
+{% block main %}
+
     <ul>
         {% for i in 1..5 %}
             <li>
@@ -14,6 +21,5 @@
             </li>
         {% endfor %}
     </ul>
-</main>
 
-{% include "partials/_footer.html.twig" %}
+{% endblock main %}

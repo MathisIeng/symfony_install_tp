@@ -1,21 +1,27 @@
-{% include "partials/_header.html.twig" %}
+{% extends 'base.html.twig' %}
 
-    <main>
-        <h1 id="titleHome">Liste des Articles</h1>
-        <ul>
-            {% for article in articles %}
-                <li>
-                    <h2>{{ article.title }}</h2>
-                    <p>{{ article.content }}</p>
-                    <img alt="heyheyhey" src="{{ article.image }}">
-                    <!-- génère un lien dynamique vers la page de détails d'un article spécifique.
-                         La fonction path() crée une URL basée sur la route définie dans Symfony, ici "article_show".
-                         L'argument 'id' est passé en tant que paramètre à la route, permettant de générer une URL unique pour chaque article
-                         en fonction de son identifiant unique -->
-                    <a href="{{ path('article_show', {'id': article.id}) }}">Voir l'article</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </main>
+{% block metatitle %}
 
-{% include "partials/_footer.html.twig" %}
+    Liste des articles | SIUUUUUU
+
+{% endblock metatitle %}
+
+{% block main %}
+
+    <h1 id="titleHome">Liste des Articles</h1>
+    <ul>
+        {% for article in articles %}
+            <li>
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.content }}</p>
+                <img alt="heyheyhey" src="{{ article.image }}">
+                <!-- génère un lien dynamique vers la page de détails d'un article spécifique.
+                     La fonction path() crée une URL basée sur la route définie dans Symfony, ici "article_show".
+                     L'argument 'id' est passé en tant que paramètre à la route, permettant de générer une URL unique pour chaque article
+                     en fonction de son identifiant unique -->
+                <a href="{{ path('article_show', {'id': article.id}) }}">Voir l'article</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock main %}
