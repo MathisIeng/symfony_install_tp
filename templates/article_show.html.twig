@@ -1,0 +1,15 @@
+{% include "partials/_header.html.twig" %}
+
+<main>
+    <ul>
+        {% for articles in article %}
+            <li>
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.content }}</p>
+                <img src="{{ article.image }}";>
+            </li>
+        {% endfor %}
+    </ul>
+</main>
+
+{% include "partials/_footer.html.twig" %}
