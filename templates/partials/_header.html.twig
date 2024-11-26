@@ -15,6 +15,11 @@
                 <li><a href="{{ path('home') }}">HOME PAGE</a></li>
                 <li><a href="{{ path('articles_list') }}">ARTICLES</a></li>
             </ul>
+
+            <form method="get" action="{{ path('article_search_results') }}">
+                <input type="text" name="search"/>
+                <input type="submit"/>
+            </form>
         </nav>
     </header>
 

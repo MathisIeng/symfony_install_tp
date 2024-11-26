@@ -123,6 +123,10 @@ class ArticleController extends AbstractController
     public function articleSearchResults(Request $request) {
         $search = $request->query->get('search');
 
-        dump($search); die;
+        // On crée un nouvier fichier twig et on retourne notre méthode vers
+        // Cette page
+        return $this->render('article_search_results.html.twig', [
+            'search' => $search
+        ]);
     }
 }

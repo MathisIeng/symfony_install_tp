@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-header {
+body {
     background-image: url("https://www.wallpaperuse.com/wallp/94-942645_m.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -112,4 +112,14 @@ nav ul li a:active {
     background: #3498db;
     transform: scale(0.9) rotate(-5deg);
     box-shadow: 0 0 10px #2980b9 inset;
+}
+
+form {
+    width: 80%;
+    margin: 20px auto;
+}
+
+input {
+    border-radius: 10px;
+    height: 30px;
 }
