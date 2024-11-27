@@ -21,7 +21,32 @@ body {
     margin-top: 50px;
 }
 
+#ulHeader {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espace entre les articles */
+    justify-content: space-between;
+    padding: 20px;
+}
 
+/* Chaque article */
+.liHeader {
+    flex: 1 1 calc(20% - 20px); /* Chaque article occupe 50% de la largeur moins l'espacement */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    padding: 20px;
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Effet au survol */
+.liHeader:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
 
 /* Liste des articles */
 ul {

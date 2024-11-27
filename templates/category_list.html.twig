@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+
+    Les Catégories | SIUUUUUUU
+
+{% endblock metatitle %}
+
+{% block main %}
+
+    <h1>Liste des catégories</h1>
+    <ul>
+        {% for category in categories %}
+            <li>
+                <a href="{{ path('category_show', { id: category.id }) }}">
+                    {{ category.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock main %}
