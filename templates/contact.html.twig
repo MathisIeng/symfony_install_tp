@@ -15,7 +15,11 @@
         </div>
     {% endif %}
 
-    <form action="" method="post">
+    {%  if error %}
+        {{ error }}
+    {% endif %}
+
+    <form action="{{ path('contact') }}" method="post">
         <label for="name">Nom</label>
         <input id="search" type="text" name="name" placeholder="Entrez votre nom"/>
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use \Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,41 +12,13 @@ class ArticleController extends AbstractController
 {
 
     #[Route('/articles', name: 'articles_list')]
-    public function articles(): Response {
+    // Grâce à l'autowire la classe ArticleRepository est instanciée
+    public function articles(ArticleRepository $articleRepository): Response {
 
-        $articles = [
-            [
-                'id' => 1,
-                'title' => 'Article 1',
-                'content' => 'SCORPION',
-                'image' => 'https://m.media-amazon.com/images/I/61l9Za1KRBL._UF1000,1000_QL80_.jpg',
-            ],
-            [
-                'id' => 2,
-                'title' => 'Article 2',
-                'content' => 'MORE LIFE',
-                'image' => 'https://www.thebackpackerz.com/wp-content/uploads/2017/03/More-Life-drake.jpg',
-            ],
-            [
-                'id' => 3,
-                'title' => 'Article 3',
-                'content' => 'IF YOU',
-                'image' => 'https://www.udiscovermusic.com/wp-content/uploads/2020/02/Drake-If-Youre-Reading-This-Its-Too-Late-album-cover-820-820x820.jpg',
-            ],
-            [
-                'id' => 4,
-                'title' => 'Article 4',
-                'content' => 'SHADOW',
-                'image' => 'https://cdn-images.dzcdn.net/images/cover/d46b7a8aa40ef7f09d71a03c2ce8edcd/0x1900-000000-80-0-0.jpg',
-            ],
-            [
-                'id' => 5,
-                'title' => 'Article 5',
-                'content' => 'VIEWS',
-                'image' => 'https://media.pitchfork.com/photos/5929b556ea9e61561daa6dca/1:1/w_450%2Cc_limit/2e5f0170.jpg',
-            ]
+        // On récupère avec la méthode findAll, tout les articles
+        // De notre BDD via la table article
+        $articles = $articleRepository->findAll();
 
-        ];
         return $this->render('articles_list.html.twig', [
             'articles' => $articles
         ]);
@@ -58,60 +31,9 @@ class ArticleController extends AbstractController
     #[Route('/article/{id}', 'article_show', ['id' => '\d+'])]
     // Par contre je dois bien le rentrer en paramètre de ma méthode
     // Et symfony s'occupe du reste c'est magique
-    public function showArticle(int $id): Response {
+    public function showArticle(int $id, ArticleRepository $articleRepository): Response {
 
-
-        $articles = [
-            [
-                'id' => 1,
-                'title' => 'Article 1',
-                'content' => 'SCORPION',
-                'image' => 'https://m.media-amazon.com/images/I/61l9Za1KRBL._UF1000,1000_QL80_.jpg',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 2,
-                'title' => 'Article 2',
-                'content' => 'MORE LIFE',
-                'image' => 'https://www.thebackpackerz.com/wp-content/uploads/2017/03/More-Life-drake.jpg',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 3,
-                'title' => 'Article 3',
-                'content' => 'IF YOU',
-                'image' => 'https://www.udiscovermusic.com/wp-content/uploads/2020/02/Drake-If-Youre-Reading-This-Its-Too-Late-album-cover-820-820x820.jpg',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 4,
-                'title' => 'Article 4',
-                'content' => 'SHADOW',
-                'image' => 'https://cdn-images.dzcdn.net/images/cover/d46b7a8aa40ef7f09d71a03c2ce8edcd/0x1900-000000-80-0-0.jpg',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ],
-            [
-                'id' => 5,
-                'title' => 'Article 5',
-                'content' => 'VIEWS',
-                'image' => 'https://media.pitchfork.com/photos/5929b556ea9e61561daa6dca/1:1/w_450%2Cc_limit/2e5f0170.jpg',
-                'createdAt' => new \DateTime('2030-01-01 00:00:00')
-            ]
-
-        ];
-
-        // On donne a notre nouvelle variable la valeur null
-        $articleFound = null;
-
-        // On crée une boucle qui va parcourir tout les $article du tableau
-        // $articles, si l'id d'un des $article correspond à notre variable $id
-        // Donc la donnée récupérer en GET alors $articleFound affiche l'article
-        // correspondant
-        foreach ($articles as $article) {
-            if ($article['id'] === $id) {
-                $articleFound = $article;
-            }
-        }
+        $articleFound = $articleRepository->find($id);
 
         if (!$articleFound) {
             // Ici, si l'utilisateur essaie de trouver un article avec un id
