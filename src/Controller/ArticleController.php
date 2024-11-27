@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use \Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,38 +11,38 @@ class ArticleController extends AbstractController
 {
 
     #[Route('/articles', name: 'articles_list')]
-    public function articles() {
+    public function articles(): Response {
 
         $articles = [
             [
                 'id' => 1,
                 'title' => 'Article 1',
-                'content' => 'Dead head',
-                'image' => 'https://i.makeagif.com/media/2-18-2023/HPLAcW.gif',
+                'content' => 'SCORPION',
+                'image' => 'https://m.media-amazon.com/images/I/61l9Za1KRBL._UF1000,1000_QL80_.jpg',
             ],
             [
                 'id' => 2,
                 'title' => 'Article 2',
-                'content' => 'Miel Pops',
-                'image' => 'https://media.tenor.com/duGh7BkKc3gAAAAM/bumble-bee-sus.gif',
+                'content' => 'MORE LIFE',
+                'image' => 'https://www.thebackpackerz.com/wp-content/uploads/2017/03/More-Life-drake.jpg',
             ],
             [
                 'id' => 3,
                 'title' => 'Article 3',
-                'content' => 'Ah bon ?',
-                'image' => 'https://i.gifer.com/74VE.gif',
+                'content' => 'IF YOU',
+                'image' => 'https://www.udiscovermusic.com/wp-content/uploads/2020/02/Drake-If-Youre-Reading-This-Its-Too-Late-album-cover-820-820x820.jpg',
             ],
             [
                 'id' => 4,
                 'title' => 'Article 4',
-                'content' => 'Choqué',
-                'image' => 'https://media.tenor.com/7RJbuufuLNkAAAAM/tik-tok-tiktok-meme.gif',
+                'content' => 'SHADOW',
+                'image' => 'https://cdn-images.dzcdn.net/images/cover/d46b7a8aa40ef7f09d71a03c2ce8edcd/0x1900-000000-80-0-0.jpg',
             ],
             [
                 'id' => 5,
                 'title' => 'Article 5',
-                'content' => 'Rizz',
-                'image' => 'https://media.tenor.com/ElJBqX9FyNgAAAAM/sockcord-sock.gif',
+                'content' => 'VIEWS',
+                'image' => 'https://media.pitchfork.com/photos/5929b556ea9e61561daa6dca/1:1/w_450%2Cc_limit/2e5f0170.jpg',
             ]
 
         ];
@@ -54,41 +55,47 @@ class ArticleController extends AbstractController
     // l'article en entier selon l'id récupérer dans l'url grâce au GET
     // On ajoute a notre url {id} afin de récupérer l'id directement
     // dans mon url sans avoir besoin de faire ?id=""
-    #[Route('/article/{id}', name: 'article_show')]
+    #[Route('/article/{id}', 'article_show', ['id' => '\d+'])]
     // Par contre je dois bien le rentrer en paramètre de ma méthode
     // Et symfony s'occupe du reste c'est magique
-    public function showArticle($id) {
+    public function showArticle(int $id): Response {
+
 
         $articles = [
             [
                 'id' => 1,
                 'title' => 'Article 1',
-                'content' => 'Dead head',
-                'image' => 'https://i.makeagif.com/media/2-18-2023/HPLAcW.gif',
+                'content' => 'SCORPION',
+                'image' => 'https://m.media-amazon.com/images/I/61l9Za1KRBL._UF1000,1000_QL80_.jpg',
+                'createdAt' => new \DateTime('2030-01-01 00:00:00')
             ],
             [
                 'id' => 2,
                 'title' => 'Article 2',
-                'content' => 'Miel Pops',
-                'image' => 'https://media.tenor.com/duGh7BkKc3gAAAAM/bumble-bee-sus.gif',
+                'content' => 'MORE LIFE',
+                'image' => 'https://www.thebackpackerz.com/wp-content/uploads/2017/03/More-Life-drake.jpg',
+                'createdAt' => new \DateTime('2030-01-01 00:00:00')
             ],
             [
                 'id' => 3,
                 'title' => 'Article 3',
-                'content' => 'Ah bon ?',
-                'image' => 'https://i.gifer.com/74VE.gif',
+                'content' => 'IF YOU',
+                'image' => 'https://www.udiscovermusic.com/wp-content/uploads/2020/02/Drake-If-Youre-Reading-This-Its-Too-Late-album-cover-820-820x820.jpg',
+                'createdAt' => new \DateTime('2030-01-01 00:00:00')
             ],
             [
                 'id' => 4,
                 'title' => 'Article 4',
-                'content' => 'Choqué',
-                'image' => 'https://media.tenor.com/7RJbuufuLNkAAAAM/tik-tok-tiktok-meme.gif',
+                'content' => 'SHADOW',
+                'image' => 'https://cdn-images.dzcdn.net/images/cover/d46b7a8aa40ef7f09d71a03c2ce8edcd/0x1900-000000-80-0-0.jpg',
+                'createdAt' => new \DateTime('2030-01-01 00:00:00')
             ],
             [
                 'id' => 5,
                 'title' => 'Article 5',
-                'content' => 'Rizz',
-                'image' => 'https://media.tenor.com/ElJBqX9FyNgAAAAM/sockcord-sock.gif',
+                'content' => 'VIEWS',
+                'image' => 'https://media.pitchfork.com/photos/5929b556ea9e61561daa6dca/1:1/w_450%2Cc_limit/2e5f0170.jpg',
+                'createdAt' => new \DateTime('2030-01-01 00:00:00')
             ]
 
         ];
@@ -101,9 +108,15 @@ class ArticleController extends AbstractController
         // Donc la donnée récupérer en GET alors $articleFound affiche l'article
         // correspondant
         foreach ($articles as $article) {
-            if ($article['id'] === (int) $id) {
+            if ($article['id'] === $id) {
                 $articleFound = $article;
             }
+        }
+
+        if (!$articleFound) {
+            // Ici, si l'utilisateur essaie de trouver un article avec un id
+            // qui n'est pas présent sur mon site, on le redirige vers 404
+            return $this->redirectToRoute('not-found');
         }
 
         // dump($id, $articleFound); die;
@@ -118,9 +131,10 @@ class ArticleController extends AbstractController
 
     #[Route('/articles/search-results', name: 'article_search_results')]
     // Nouvelle route et méthode pour utiliser ce que Symfony applique lui même
-    // Sans avoir besoin de crée nous même la nouvelle instance Request, on la met
-        // en paramètre de notre méthode ainsi que notre variable
-    public function articleSearchResults(Request $request) {
+    // Sans avoir besoin de crée nous même la nouvelle INSTANCE Request, on la met
+        // en paramètre de notre méthode ainsi que notre variable (autowire)
+        // De manière automatique
+    public function articleSearchResults(Request $request): Response {
         $search = $request->query->get('search');
 
         // On crée un nouvier fichier twig et on retourne notre méthode vers

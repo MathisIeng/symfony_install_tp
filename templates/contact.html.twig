@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+
+    Formulaire de contact | SIUUUUUU
+
+{% endblock metatitle %}
+
+{% block main %}
+
+    {% if confirmation %}
+        <div class="confirmation">
+            {{ confirmation }}
+            {{ "now"|date('d/m/Y H:i', timezone: "Europe/Paris") }}
+        </div>
+    {% endif %}
+
+    <form action="" method="post">
+        <label for="name">Nom</label>
+        <input id="search" type="text" name="name" placeholder="Entrez votre nom"/>
+
+        <label for="text">Message</label>
+        <textarea id="search2" type="text" name="message" placeholder="Entrez votre message"></textarea>
+
+        <input id="button" type="submit"/>
+    </form>
+
+{% endblock main %}

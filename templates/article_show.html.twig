@@ -9,17 +9,12 @@
 {% block main %}
 
     <ul>
-        {% for i in 1..5 %}
-            <li>
-                {% if article %}
-                    <h1>{{ article.title }}</h1>
-                    <p>{{ article.content }}</p>
-                    <img src="{{ article.image }}" alt="Image de {{ article.title }}">
-                {% else %}
-                    <p>On a rien trouvé chef</p>
-                {% endif %}
-            </li>
-        {% endfor %}
+        <li>
+            <h1>{{ article.title }}</h1>
+            <p>Date de création : {{ article.createdAt | date('d/m/y h:i:s') }}</p>
+            <p>{{ article.content }}</p>
+            <img src="{{ article.image }}" alt="Image de {{ article.title }}">
+        </li>
     </ul>
 
 {% endblock main %}
