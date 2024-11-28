@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use \Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,5 +66,32 @@ class ArticleController extends AbstractController
         return $this->render('article_search_results.html.twig', [
             'search' => $search
         ]);
+    }
+
+    #[Route('/article/create', 'create_article')]
+    public function createArticle(EntityManagerInterface $entityManager) {
+
+        // Je crée une instance de l'entité Article
+        // et l'enregistre dans ma table article
+
+        $article = new Article();
+        // J'utilise les méthodes set pour associé une valeur
+        // à chacune de mes propritétés
+        $article->setTitle('Article 6');
+        // Affecte le titre "Article 6"
+        $article->setContent('Contenu article 6');
+        // Définit le contenu de l'article
+        $article->setImage("https://www.booska-p.com/wp-content/uploads/2018/03/drake-nothing-was-the-same-deluxe.jpg");
+        // Associe une image
+        $article->setCreatedAt(new \DateTime());
+        // Attribue la date et l'heure actuelles à l'article
+
+        // Ajoute l'article à la gestion de Doctrine
+        $entityManager->persist($article);
+        // Exécute toutes les opérations en attente, ici on
+        // Enregistre l'article dans la BDD
+        $entityManager->flush();
+
+        return new Response('Article crée');
     }
 }

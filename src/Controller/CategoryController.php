@@ -17,7 +17,7 @@ class CategoryController extends AbstractController
 {
     // La route me permettant de choisir le chemin de l'url vers lequel je pourrai
     // accéder à la page en question
-    #[Route('/categories', name: 'category_list')]
+    #[Route('/categories', name: 'categories_list')]
     // Méthode qui va nous permettre d'afficher toutes les catégories d'un coup
     // On passe mtn en paramètre le repository en question (autowire)
     public function categoryList(CategoryRepository $categoryRepository) {
@@ -26,24 +26,25 @@ class CategoryController extends AbstractController
         // Depuis ma BDD (ORM), avec la méthode findAll
         $categories = $categoryRepository->findAll();
 
-        return $this->render('category_list.html.twig', [
+        return $this->render('categories_list.html.twig', [
             'categories' => $categories
         ]);
     }
 
     // Même principe que notre première méthode mais ici pour récupérer précisement
     // 1 catégorie par rapport à l'id
-    #[Route('/categorie/{id}', name: 'category_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route('/categorie/{id}', name: 'categorie_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function categoryById(CategoryRepository $categoryRepository, $id) {
 
-        $category = $categoryRepository->find($id);
+        $categorie = $categoryRepository->find($id);
 
-        if (!$category) {
+        // Condition, si la category n'est pas trouvé, on redirige vers une page 404
+        if (!$categorie) {
             return $this->redirectToRoute('not-found');
         }
 
-        return $this->render('category_show.html.twig', [
-            'category' => $category
+        return $this->render('categorie_show.html.twig', [
+            'categorie' => $categorie
         ]);
     }
 }
