@@ -72,7 +72,7 @@ class CategoryController extends AbstractController
         return $this->redirectToRoute('categories_list');
     }
 
-    #[Route('/category/remove/{id}', 'category_removed')]
+    #[Route('/category/remove/{id}', 'category_removed', ['id' => '\d+'])]
     public function categoryRemove (EntityManagerInterface $entityManager ,CategoryRepository $categoryRepository,int $id) {
 
         // dd('test');
