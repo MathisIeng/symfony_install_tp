@@ -15,7 +15,8 @@ class ArticleController extends AbstractController
 
     #[Route('/articles', name: 'articles_list')]
     // Grâce à l'autowire la classe ArticleRepository est instanciée
-    public function articles(ArticleRepository $articleRepository): Response {
+    public function articles(ArticleRepository $articleRepository): Response
+    {
 
         // On récupère avec la méthode findAll, tout les articles
         // De notre BDD via la table article
@@ -32,8 +33,9 @@ class ArticleController extends AbstractController
     // dans mon url sans avoir besoin de faire ?id=""
     #[Route('/article/{id}', 'article_show', ['id' => '\d+'])]
     // Par contre je dois bien le rentrer en paramètre de ma méthode
-    // Et symfony s'occupe du reste c'est magique
-    public function showArticle(int $id, ArticleRepository $articleRepository): Response {
+        // Et symfony s'occupe du reste c'est magique
+    public function showArticle(int $id, ArticleRepository $articleRepository): Response
+    {
 
         $articleFound = $articleRepository->find($id);
 
@@ -55,10 +57,11 @@ class ArticleController extends AbstractController
 
     #[Route('/articles/search-results', name: 'article_search_results')]
     // Nouvelle route et méthode pour utiliser ce que Symfony applique lui même
-    // Sans avoir besoin de crée nous même la nouvelle INSTANCE Request, on la met
+        // Sans avoir besoin de crée nous même la nouvelle INSTANCE Request, on la met
         // en paramètre de notre méthode ainsi que notre variable (autowire)
         // De manière automatique
-    public function articleSearchResults(Request $request): Response {
+    public function articleSearchResults(Request $request): Response
+    {
         $search = $request->query->get('search');
 
         // On crée un nouvier fichier twig et on retourne notre méthode vers
@@ -68,32 +71,44 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/article/create', 'create_article')]
-    public function createArticle(EntityManagerInterface $entityManager) {
+    #[Route('/article/create', 'article_create')]
+    public function createArticle(EntityManagerInterface $entityManager, Request $request): Response
+    {
 
-        // Je crée une instance de l'entité Article
-        // et l'enregistre dans ma table article
+        // Si le formulaire a été soumis (requête POST)
+        if ($request->isMethod('POST')) {
+            // On récupère les données du formulaire
+            $title = $request->request->get('title');
+            $content = $request->request->get('content');
+            $image = $request->request->get('image');
 
-        $article = new Article();
-        // J'utilise les méthodes set pour associé une valeur
-        // à chacune de mes propritétés
-        $article->setTitle('Article 6');
-        // Affecte le titre "Article 6"
-        $article->setContent('Contenu article 6');
-        // Définit le contenu de l'article
-        $article->setImage("https://www.booska-p.com/wp-content/uploads/2018/03/drake-nothing-was-the-same-deluxe.jpg");
-        // Associe une image
-        $article->setCreatedAt(new \DateTime());
-        // Attribue la date et l'heure actuelles à l'article
+            // Je crée une instance de l'entité Article
+            // et l'enregistre dans ma table article
 
-        // Ajoute l'article à la gestion de Doctrine
-        $entityManager->persist($article);
-        // Exécute toutes les opérations en attente, ici on
-        // Enregistre l'article dans la BDD
-        $entityManager->flush();
+            $article = new Article();
+            // J'utilise les méthodes set pour associé une valeur
+            // à chacune de mes propritétés
+            $article->setTitle($title);
+            // Affecte le titre qui à été soumis dans le form
+            $article->setContent($content);
+            // Définit le contenu de l'article
+            $article->setImage($image);
+            // Associe une image
+            $article->setCreatedAt(new \DateTime());
+            // Attribue la date et l'heure actuelles à l'article
 
-        return $this->redirectToRoute('articles_list');
+            // Ajoute l'article à la gestion de Doctrine
+            $entityManager->persist($article);
+            // Exécute toutes les opérations en attente, ici on
+            // Enregistre l'article dans la BDD
+            $entityManager->flush();
+
+            return $this->redirectToRoute('articles_list');
+        }
+
+        return $this->render('article_create.html.twig');
     }
+
 
     #[Route('/article/remove/{id}', 'article_remove', ['id' => '\d+'])]
     // Nouvelle route et nouvelle méthode pour supprimer un article depuis notre BDD

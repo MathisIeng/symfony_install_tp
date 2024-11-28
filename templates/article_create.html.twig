@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+
+    Création d'article | SIUUUUUU
+
+{% endblock metatitle %}
+
+{% block main %}
+    <form method="POST" action="">
+
+        <label for="title">Titre</label>
+        <input type="text" id="title" name="title">
+
+        <label for="content">Contenu</label>
+        <textarea id="content" name="content"></textarea>
+
+        <label for="image">Image</label>
+        <input type="text" id="image" name="image">
+
+        <button type="submit">Créer l'article</button>
+
+    </form>
+{% endblock main %}
