@@ -14,6 +14,7 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    // ?string (length: 255) = VARCHAR en SQL
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]

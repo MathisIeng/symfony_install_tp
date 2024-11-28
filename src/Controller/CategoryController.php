@@ -1,5 +1,8 @@
 <?php
 
+// DATABASE_URL="mysql://root:root@localhost:8889/piscine_sf_install?charset=utf8mb4"
+// La chaîne de connexion avec la BDD (nom user et mdp)
+
 namespace App\Controller;
 
 use App\Repository\CategoryRepository;
@@ -20,7 +23,7 @@ class CategoryController extends AbstractController
     public function categoryList(CategoryRepository $categoryRepository) {
 
         // Création de varaible afin de lister toutes les catégories existantes
-        // Depuis ma BDD (ORM)
+        // Depuis ma BDD (ORM), avec la méthode findAll
         $categories = $categoryRepository->findAll();
 
         return $this->render('category_list.html.twig', [
@@ -29,11 +32,15 @@ class CategoryController extends AbstractController
     }
 
     // Même principe que notre première méthode mais ici pour récupérer précisement
-    // l'id d'une catégorie
+    // 1 catégorie par rapport à l'id
     #[Route('/categorie/{id}', name: 'category_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function categoryById(CategoryRepository $categoryRepository, $id) {
 
         $category = $categoryRepository->find($id);
+
+        if (!$category) {
+            return $this->redirectToRoute('not-found');
+        }
 
         return $this->render('category_show.html.twig', [
             'category' => $category

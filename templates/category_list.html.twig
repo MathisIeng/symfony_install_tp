@@ -12,6 +12,7 @@
     <ul>
         {% for category in categories %}
             <li>
+                {# path me permet de me diriger vers la page qui contient l'id de la catégorie en question #}
                 <a href="{{ path('category_show', { id: category.id }) }}">
                     {{ category.title }}
                 </a>
