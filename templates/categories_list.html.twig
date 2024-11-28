@@ -17,6 +17,7 @@
                     {{ categorie.title }}
                 </a>
                 <a href="{{ path('category_removed', {'id': categorie.id}) }}">Supprimer la catégorie</a>
+                <a href="{{ path('category_update', {'id': categorie.id}) }}">Modifier la catégorie</a>
             </li>
         {% endfor %}
     </ul>

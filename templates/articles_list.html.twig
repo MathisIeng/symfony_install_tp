@@ -21,6 +21,7 @@
                      en fonction de son identifiant unique -->
                 <a href="{{ path('article_show', {'id': article.id}) }}">Voir l'article</a>
                 <a href="{{ path('article_remove', {'id': article.id}) }}">Supprimer l'article</a>
+                <a href="{{ path('article_update', {'id': article.id}) }}">Modifier l'article</a>
             </li>
         {% endfor %}
     </ul>
