@@ -92,6 +92,29 @@ class ArticleController extends AbstractController
         // Enregistre l'article dans la BDD
         $entityManager->flush();
 
-        return new Response('Article crée');
+        return $this->redirectToRoute('articles_list');
+    }
+
+    #[Route('/article/remove/{id}', 'article_remove', ['id' => '\d+'])]
+    // Nouvelle route et nouvelle méthode pour supprimer un article depuis notre BDD
+    // Qui possède bien un ID valide/existant
+    public function removeArticle(ArticleRepository $articleRepository, EntityManagerInterface $entityManager,int $id) {
+
+        // dd('test');
+
+        // Récupère l'article à supprimer
+        $article = $articleRepository->find($id);
+
+        if (!$article) {
+            // Condition si l'article n'a pas été trouvé, on redirige vers notre page 404
+            return $this->redirectToRoute('not-found');
+        }
+
+        // Nouvelle méthode remove qui permet de supprimer un article
+        $entityManager->remove($article);
+        // On utilise toujours la méthode flush pour bien envoyer notre suppression
+        $entityManager->flush();
+
+        return $this->redirectToRoute('articles_list');
     }
 }

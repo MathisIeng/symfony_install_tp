@@ -36,6 +36,8 @@ class CategoryController extends AbstractController
 
     // Même principe que notre première méthode mais ici pour récupérer précisement
     // 1 catégorie par rapport à l'id
+    // Le requirements sert à préciser que c'est un integer qu'on doit rentrer afin
+    // que ce le code de la méthode soit éxecuter
     #[Route('/categorie/{id}', name: 'categorie_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function categoryById(CategoryRepository $categoryRepository, $id) {
 
@@ -62,10 +64,28 @@ class CategoryController extends AbstractController
         $category->setColor('brown');
 
         // On ajoute la category à la gestion de Doctrine grâce à $entityManager
+        // "pre-sauvegarder"
         $entityManager->persist($category);
         // On l'insère dans notre BDD comme un push avec git
         $entityManager->flush();
 
-        return new Response('Category crée');
+        return $this->redirectToRoute('categories_list');
+    }
+
+    #[Route('/category/remove/{id}', 'category_removed')]
+    public function categoryRemove (EntityManagerInterface $entityManager ,CategoryRepository $categoryRepository,int $id) {
+
+        // dd('test');
+
+        $category = $categoryRepository->find($id);
+
+        if (!$category) {
+            return $this->redirectToRoute('not-found');
+        }
+
+        $entityManager->remove($category);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('categories_list');
     }
 }
