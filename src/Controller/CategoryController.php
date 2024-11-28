@@ -5,8 +5,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 // Grâce au terminal et certaines lignes de commandes, on a crée une entité
@@ -46,5 +49,23 @@ class CategoryController extends AbstractController
         return $this->render('categorie_show.html.twig', [
             'categorie' => $categorie
         ]);
+    }
+
+    #[Route('/category/created', 'category_created')]
+    public function createCategory(EntityManagerInterface $entityManager):Response {
+
+        // Nouvelle instance de l'entité Category
+        $category = new Category();
+        // On utilise set pour attribuer des valeurs à nos colonnes
+        // correspondantes
+        $category->setTitle('Horreur');
+        $category->setColor('brown');
+
+        // On ajoute la category à la gestion de Doctrine grâce à $entityManager
+        $entityManager->persist($category);
+        // On l'insère dans notre BDD comme un push avec git
+        $entityManager->flush();
+
+        return new Response('Category crée');
     }
 }
