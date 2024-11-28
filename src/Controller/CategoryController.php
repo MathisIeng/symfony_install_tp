@@ -90,8 +90,12 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/category/update/{id}', 'category_update', ['id' => '\d+'])]
+    // Nouvelle méthode pour mettre à jour une catégorie en récupérant l'id correspondant
+        // à celle ci
     public function updateCategory (EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, int $id) {
 
+        // Ici, on viens trouver avec la fonction find l'id de la catégorie qu'on veut
+        // modifier via le repository
         $category = $categoryRepository->find($id);
 
         // dd($category);
@@ -100,10 +104,14 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('not-found');
         }
 
+        // maj du titre de notre cat
         $category->setTitle('RP maj');
+        // maj de la color de notre cat
         $category->setColor('pink');
 
+        // on pre save notre cat
         $entityManager->persist($category);
+        // on la push
         $entityManager->flush();
 
         return $this->redirectToRoute('categories_list');
