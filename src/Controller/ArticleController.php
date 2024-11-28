@@ -117,4 +117,36 @@ class ArticleController extends AbstractController
 
         return $this->redirectToRoute('articles_list');
     }
+
+    #[Route('/article/update/{id}', 'article_update', ['id' => '\d+'])]
+    // Nouvelle méthode pour mettre à jour un article en récupérant l'id correspondant
+    // à celui ci
+    public function updateArticle(ArticleRepository $articleRepository, EntityManagerInterface $entityManager,int $id) {
+
+        // Ici, on viens trouver avec la fonction find l'id de l'article qu'on veut
+        // modifier via le repository
+        $article = $articleRepository->find($id);
+
+        // dd($article);
+
+        // On met à jour le titre de mon article
+        $article->setTitle('Article maj');
+        // Egalement son contenu
+        $article->setContent('maj incomming');
+
+        // dd($article);
+
+        if (!$article) {
+            // On redirige vers une erreur 404 si l'id ne correspond a aucun article
+            return $this->redirectToRoute('not-found');
+        }
+
+        // Avec persist, on pre sauvegarde la modification de notre article
+        $entityManager->persist($article);
+        // On push la maj à notre BDD
+        $entityManager->flush();
+
+        return $this->redirectToRoute('articles_list');
+
+    }
 }
