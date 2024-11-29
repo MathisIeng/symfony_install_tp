@@ -8,6 +8,10 @@
 
 {% block main %}
 
+    {% if error %}
+        <p id="error">{{ error }}</p>
+    {% endif %}
+
     <form method="POST" action="">
 
         <label for="title">Titre</label>

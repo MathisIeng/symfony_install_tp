@@ -63,6 +63,15 @@ class CategoryController extends AbstractController
             $title = $request->request->get('title');
             $color = $request->request->get('color');
 
+
+            // Vérification simple si les champs sont vides
+            if (empty($title) || empty($color)) {
+                // Retourne à la même page avec un message d'erreur
+                return $this->render('category_create.html.twig',
+                ['error' => 'Veuillez remplir les champs']);
+            }
+
+
             // Nouvelle instance de l'entité Category
             $category = new Category();
             // On utilise set pour attribuer des valeurs à nos colonnes

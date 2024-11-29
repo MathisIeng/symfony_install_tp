@@ -83,6 +83,13 @@ class ArticleController extends AbstractController
             $image = $request->request->get('image');
 
 
+            // Vérification simple si les champs sont vides
+            if (empty($title) || empty($content) || empty($image)) {
+                // Retourne à la même page avec un message d'erreur
+                return $this->render('article_create.html.twig',
+                    ['error' => 'Veuillez remplir les champs']);
+            }
+
             // Je crée une instance de l'entité Article
             // et l'enregistre dans ma table article
 
