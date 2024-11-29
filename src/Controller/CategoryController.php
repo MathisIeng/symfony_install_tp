@@ -26,8 +26,9 @@ class CategoryController extends AbstractController
     // accéder à la page en question
     #[Route('/categories', name: 'categories_list')]
     // Méthode qui va nous permettre d'afficher toutes les catégories d'un coup
-    // On passe mtn en paramètre le repository en question (autowire)
-    public function categoryList(CategoryRepository $categoryRepository) {
+        // On passe mtn en paramètre le repository en question (autowire)
+    public function categoryList(CategoryRepository $categoryRepository)
+    {
 
         // Création de varaible afin de lister toutes les catégories existantes
         // Depuis ma BDD (ORM), avec la méthode findAll
@@ -43,7 +44,8 @@ class CategoryController extends AbstractController
     // Le requirements sert à préciser que c'est un integer qu'on doit rentrer afin
     // que ce le code de la méthode soit éxecuter
     #[Route('/categorie/{id}', name: 'categorie_show', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function categoryById(CategoryRepository $categoryRepository, $id) {
+    public function categoryById(CategoryRepository $categoryRepository, $id)
+    {
 
         $categorie = $categoryRepository->find($id);
 
@@ -58,7 +60,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/category/created', 'category_created')]
-    public function createCategory(EntityManagerInterface $entityManager, Request $request):Response
+    public function createCategory(EntityManagerInterface $entityManager, Request $request): Response
     {
 
         // Création d'une nouvelle instance de l'entité Category
@@ -72,7 +74,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         // On vérifie si le formulaire à été envoyé
-        if ($form->isSubmitted() ) {
+        if ($form->isSubmitted()) {
             // On sauvegarde et on envoie
             $entityManager->persist($category);
             $entityManager->flush();
@@ -81,14 +83,15 @@ class CategoryController extends AbstractController
         $formView = $form->createView();
         // Prépare la vue du formulaire pour qu'elle puisse être affichée dans le fichier Twig
 
-        return $this->render('category_create.html.twig',[
+        return $this->render('category_create.html.twig', [
             // On passe la variable $formView à notre twg
             'formView' => $formView,
         ]);
     }
 
     #[Route('/category/remove/{id}', 'category_removed', ['id' => '\d+'])]
-    public function categoryRemove (EntityManagerInterface $entityManager ,CategoryRepository $categoryRepository,int $id) {
+    public function categoryRemove(EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, int $id)
+    {
 
         // dd('test');
 
@@ -107,46 +110,33 @@ class CategoryController extends AbstractController
     #[Route('/category/update/{id}', 'category_update', ['id' => '\d+'])]
     // Nouvelle méthode pour mettre à jour une catégorie en récupérant l'id correspondant
         // à celle ci
-    public function updateCategory (EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, int $id, Request $request) {
+    public function updateCategory(EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, int $id, Request $request)
+    {
 
         // Ici, on viens trouver avec la fonction find l'id de la catégorie qu'on veut
         // modifier via le repository
         $category = $categoryRepository->find($id);
 
-        if (!$category) {
-            return $this->redirectToRoute('not-found');
-        }
+        $form = $this->createForm(CategoryType::class, $category);
+        // Génération d'un formulaire basé sur la classe 'CategoryType'
+        // Cette classe définit la structure et les champs du formulaire
 
-        $error = null;
+        // Cette nouvelle méthode, récupère les données de la requête
+        $form->handleRequest($request);
 
-        // Je vérifie si la requête est en POST
-        if ($request->isMethod('POST')) {
-            $title = $request->request->get('title');
-            $color = $request->request->get('color');
-
-
-            // Vérification simple si les champs sont vides
-            if (empty($title) || empty($color)) {
-                // Retourne à la même page avec un message d'erreur
-                return $this->render('category_update.html.twig',
-                    ['error' => 'Veuillez remplir les champs']);
-            }
-
-            // On utilise set pour attribuer des valeurs à nos colonnes
-            // correspondantes
-            $category->setTitle($title);
-            $category->setColor($color);
-
-            // On ajoute la category à la gestion de Doctrine grâce à $entityManager
-            // "pre-sauvegarder"
+        // On vérifie si le formulaire à été envoyé
+        if ($form->isSubmitted()) {
+            // On sauvegarde et on envoie
             $entityManager->persist($category);
-            // On l'insère dans notre BDD comme un push avec git
             $entityManager->flush();
-
-            return $this->redirectToRoute('categories_list');
         }
 
-        return $this->render('category_update.html.twig',
-            ['error' => $error, 'category' => $category]);
+        $formView = $form->createView();
+        // Prépare la vue du formulaire pour qu'elle puisse être affichée dans le fichier Twig
+
+        return $this->render('category_update.html.twig', [
+            // On passe la variable $formView à notre twg
+            'formView' => $formView,
+        ]);
     }
 }
