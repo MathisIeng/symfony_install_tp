@@ -82,6 +82,7 @@ class ArticleController extends AbstractController
             $content = $request->request->get('content');
             $image = $request->request->get('image');
 
+
             // Je crée une instance de l'entité Article
             // et l'enregistre dans ma table article
 
@@ -106,7 +107,9 @@ class ArticleController extends AbstractController
             return $this->redirectToRoute('articles_list');
         }
 
-        return $this->render('article_create.html.twig');
+        return $this->render('article_create.html.twig', [
+
+        ]);
     }
 
 

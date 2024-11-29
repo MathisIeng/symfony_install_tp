@@ -9,6 +9,7 @@ use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -54,22 +55,31 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/category/created', 'category_created')]
-    public function createCategory(EntityManagerInterface $entityManager):Response {
+    public function createCategory(EntityManagerInterface $entityManager, Request $request):Response
+    {
 
-        // Nouvelle instance de l'entité Category
-        $category = new Category();
-        // On utilise set pour attribuer des valeurs à nos colonnes
-        // correspondantes
-        $category->setTitle('Horreur');
-        $category->setColor('brown');
+        // Je vérifie si la requête est en POST
+        if ($request->isMethod('POST')) {
+            $title = $request->request->get('title');
+            $color = $request->request->get('color');
 
-        // On ajoute la category à la gestion de Doctrine grâce à $entityManager
-        // "pre-sauvegarder"
-        $entityManager->persist($category);
-        // On l'insère dans notre BDD comme un push avec git
-        $entityManager->flush();
+            // Nouvelle instance de l'entité Category
+            $category = new Category();
+            // On utilise set pour attribuer des valeurs à nos colonnes
+            // correspondantes
+            $category->setTitle($title);
+            $category->setColor($color);
 
-        return $this->redirectToRoute('categories_list');
+            // On ajoute la category à la gestion de Doctrine grâce à $entityManager
+            // "pre-sauvegarder"
+            $entityManager->persist($category);
+            // On l'insère dans notre BDD comme un push avec git
+            $entityManager->flush();
+
+            return $this->redirectToRoute('categories_list');
+        }
+
+        return $this->render('category_create.html.twig');
     }
 
     #[Route('/category/remove/{id}', 'category_removed', ['id' => '\d+'])]
