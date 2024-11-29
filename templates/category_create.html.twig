@@ -8,20 +8,6 @@
 
 {% block main %}
 
-    {% if error %}
-        <p id="error">{{ error }}</p>
-    {% endif %}
-
-    <form method="POST" action="">
-
-        <label for="title">Titre</label>
-        <input type="text" id="title" name="title">
-
-        <label for="color">Couleur</label>
-        <input type="color" name="color">
-
-        <button type="submit">Créer la catégorie</button>
-
-    </form>
+    {{ form(formView) }}
 
 {% endblock main %}

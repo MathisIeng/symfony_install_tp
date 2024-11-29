@@ -83,6 +83,17 @@ class ArticleController extends AbstractController
         // Génération d'un formulaire basé sur la classe 'ArticleType'
         // Cette classe définit la structure et les champs du formulaire
 
+        // Cette nouvelle méthode, récupère les données de la requête
+        $form->handleRequest($request);
+
+        // On vérifie si le formulaire à été envoyé
+        if ($form->isSubmitted() ) {
+            $article->setCreatedAt(new \DateTime());
+            // On sauvegarde et on envoie
+            $entityManager->persist($article);
+            $entityManager->flush();
+        }
+
         $formView = $form->createView();
         // Prépare la vue du formulaire pour qu'elle puisse être affichée dans le fichier Twig
 

@@ -5,7 +5,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\Category;
+use App\Form\ArticleType;
+use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,40 +61,30 @@ class CategoryController extends AbstractController
     public function createCategory(EntityManagerInterface $entityManager, Request $request):Response
     {
 
-        $error = null;
+        // Création d'une nouvelle instance de l'entité Category
+        $category = new Category();
 
-        // Je vérifie si la requête est en POST
-        if ($request->isMethod('POST')) {
-            $title = $request->request->get('title');
-            $color = $request->request->get('color');
+        $form = $this->createForm(CategoryType::class, $category);
+        // Génération d'un formulaire basé sur la classe 'CategoryType'
+        // Cette classe définit la structure et les champs du formulaire
 
+        // Cette nouvelle méthode, récupère les données de la requête
+        $form->handleRequest($request);
 
-            // Vérification simple si les champs sont vides
-            if (empty($title) || empty($color)) {
-                // Retourne à la même page avec un message d'erreur
-                return $this->render('category_create.html.twig',
-                ['error' => 'Veuillez remplir les champs']);
-            }
-
-
-            // Nouvelle instance de l'entité Category
-            $category = new Category();
-            // On utilise set pour attribuer des valeurs à nos colonnes
-            // correspondantes
-            $category->setTitle($title);
-            $category->setColor($color);
-
-            // On ajoute la category à la gestion de Doctrine grâce à $entityManager
-            // "pre-sauvegarder"
+        // On vérifie si le formulaire à été envoyé
+        if ($form->isSubmitted() ) {
+            // On sauvegarde et on envoie
             $entityManager->persist($category);
-            // On l'insère dans notre BDD comme un push avec git
             $entityManager->flush();
-
-            return $this->redirectToRoute('categories_list');
         }
 
-        return $this->render('category_create.html.twig',
-            ['error' => 'Veuillez remplir les champs']);
+        $formView = $form->createView();
+        // Prépare la vue du formulaire pour qu'elle puisse être affichée dans le fichier Twig
+
+        return $this->render('category_create.html.twig',[
+            // On passe la variable $formView à notre twg
+            'formView' => $formView,
+        ]);
     }
 
     #[Route('/category/remove/{id}', 'category_removed', ['id' => '\d+'])]
