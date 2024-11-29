@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use \Symfony\Component\HttpFoundation\Response;
@@ -75,49 +76,19 @@ class ArticleController extends AbstractController
     public function createArticle(EntityManagerInterface $entityManager, Request $request): Response
     {
 
-        $error = null;
+        // Création d'une nouvelle instance de l'entité Article
+        $article = new Article();
 
-        // Si le formulaire a été soumis (requête POST)
-        if ($request->isMethod('POST')) {
-            // On récupère les données du formulaire
-            $title = $request->request->get('title');
-            $content = $request->request->get('content');
-            $image = $request->request->get('image');
+        $form = $this->createForm(ArticleType::class, $article);
+        // Génération d'un formulaire basé sur la classe 'ArticleType'
+        // Cette classe définit la structure et les champs du formulaire
 
+        $formView = $form->createView();
+        // Prépare la vue du formulaire pour qu'elle puisse être affichée dans le fichier Twig
 
-            // Vérification simple si les champs sont vides
-            if (empty($title) || empty($content) || empty($image)) {
-                // Retourne à la même page avec un message d'erreur
-                return $this->render('article_create.html.twig',
-                    ['error' => 'Veuillez remplir les champs']);
-            }
-
-            // Je crée une instance de l'entité Article
-            // et l'enregistre dans ma table article
-
-            $article = new Article();
-            // J'utilise les méthodes set pour associé une valeur
-            // à chacune de mes propritétés
-            $article->setTitle($title);
-            // Affecte le titre qui à été soumis dans le form
-            $article->setContent($content);
-            // Définit le contenu de l'article
-            $article->setImage($image);
-            // Associe une image
-            $article->setCreatedAt(new \DateTime());
-            // Attribue la date et l'heure actuelles à l'article
-
-            // Ajoute l'article à la gestion de Doctrine
-            $entityManager->persist($article);
-            // Exécute toutes les opérations en attente, ici on
-            // Enregistre l'article dans la BDD
-            $entityManager->flush();
-
-            return $this->redirectToRoute('articles_list');
-        }
-
-        return $this->render('article_create.html.twig', [
-            'error' => $error
+        return $this->render('article_create.html.twig',[
+            // On passe la variable $formView à notre twg
+            'formView' => $formView,
         ]);
     }
 
@@ -189,7 +160,9 @@ class ArticleController extends AbstractController
             return $this->redirectToRoute('articles_list');
 
         }
-        return $this->render('article_update.html.twig', ['error' => $error,
-            'article' => $article]);
+        return $this->render('article_update.html.twig', [
+            'error' => $error, 'article' => $article,
+        ]);
     }
+
 }
