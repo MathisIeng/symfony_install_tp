@@ -142,7 +142,7 @@ class ArticleController extends AbstractController
         // Gestion de la requête (remplissage automatique du formulaire avec les données POST)
         $form->handleRequest($request);
 
-        // Vérification si le formulaire est soumis et valide
+        // Vérification si le formulaire est soumis
         if ($form->isSubmitted()) {
             // Sauvegarde des modifications dans la base de données
             $entityManager->persist($article);
