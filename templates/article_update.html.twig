@@ -2,7 +2,7 @@
 
 {% block metatitle %}
 
-    Création d'article | SIUUUUUU
+    Modification d'article | SIUUUUUU
 
 {% endblock metatitle %}
 
@@ -10,20 +10,20 @@
 
     {% if error %}
 
-    <p id="error">{{ error }}</p>
+        <p id="error">{{ error }}</p>
 
     {% endif %}
 
     <form method="POST" action="">
 
         <label for="title">Titre</label>
-        <input type="text" id="title" name="title" required>
+        <input type="text" id="title" name="title" value="{{ article.title }}" required>
 
         <label for="content">Contenu</label>
-        <textarea id="content" name="content" required></textarea>
+        <textarea id="content" name="content" required>{{ article.content }}</textarea>
 
         <label for="image">Image</label>
-        <input type="text" id="image" name="image">
+        <input type="text" id="image" name="image" value="{{ article.image }}">
 
         <button type="submit">Créer l'article</button>
 

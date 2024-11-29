@@ -124,8 +124,9 @@ class ArticleController extends AbstractController
 
     #[Route('/article/remove/{id}', 'article_remove', ['id' => '\d+'])]
     // Nouvelle route et nouvelle méthode pour supprimer un article depuis notre BDD
-    // Qui possède bien un ID valide/existant
-    public function removeArticle(ArticleRepository $articleRepository, EntityManagerInterface $entityManager,int $id) {
+        // Qui possède bien un ID valide/existant
+    public function removeArticle(ArticleRepository $articleRepository, EntityManagerInterface $entityManager, int $id)
+    {
 
         // dd('test');
 
@@ -147,33 +148,48 @@ class ArticleController extends AbstractController
 
     #[Route('/article/update/{id}', 'article_update', ['id' => '\d+'])]
     // Nouvelle méthode pour mettre à jour un article en récupérant l'id correspondant
-    // à celui ci
-    public function updateArticle(ArticleRepository $articleRepository, EntityManagerInterface $entityManager,int $id) {
+        // à celui ci
+    public function updateArticle(ArticleRepository $articleRepository, EntityManagerInterface $entityManager, int $id, Request $request): Response
+    {
 
-        // Ici, on viens trouver avec la fonction find l'id de l'article qu'on veut
-        // modifier via le repository
+        $error = null;
+
         $article = $articleRepository->find($id);
 
-        // dd($article);
+        // Si le formulaire a été soumis (requête POST)
+        if ($request->isMethod('POST')) {
+            // On récupère les données du formulaire
+            $title = $request->request->get('title');
+            $content = $request->request->get('content');
+            $image = $request->request->get('image');
 
-        // On met à jour le titre de mon article
-        $article->setTitle('Article maj');
-        // Egalement son contenu
-        $article->setContent('maj incomming');
 
-        // dd($article);
+            // Vérification simple si les champs sont vides
+            if (empty($title) || empty($content) || empty($image)) {
+                // Retourne à la même page avec un message d'erreur
+                return $this->render('article_update.html.twig',
+                    ['error' => 'Veuillez remplir les champs']);
+            }
 
-        if (!$article) {
-            // On redirige vers une erreur 404 si l'id ne correspond a aucun article
-            return $this->redirectToRoute('not-found');
+            // J'utilise les méthodes set pour associé une valeur
+            // à chacune de mes propritétés
+            $article->setTitle($title);
+            // Affecte le titre qui à été soumis dans le form
+            $article->setContent($content);
+            // Définit le contenu de l'article
+            $article->setImage($image);
+            // Associe une image
+
+            // Ajoute l'article à la gestion de Doctrine
+            $entityManager->persist($article);
+            // Exécute toutes les opérations en attente, ici on
+            // Enregistre l'article dans la BDD
+            $entityManager->flush();
+
+            return $this->redirectToRoute('articles_list');
+
         }
-
-        // Avec persist, on pre sauvegarde la modification de notre article
-        $entityManager->persist($article);
-        // On push la maj à notre BDD
-        $entityManager->flush();
-
-        return $this->redirectToRoute('articles_list');
-
+        return $this->render('article_update.html.twig', ['error' => $error,
+            'article' => $article]);
     }
 }

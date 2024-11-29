@@ -58,6 +58,8 @@ class CategoryController extends AbstractController
     public function createCategory(EntityManagerInterface $entityManager, Request $request):Response
     {
 
+        $error = null;
+
         // Je vérifie si la requête est en POST
         if ($request->isMethod('POST')) {
             $title = $request->request->get('title');
@@ -88,7 +90,8 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('categories_list');
         }
 
-        return $this->render('category_create.html.twig');
+        return $this->render('category_create.html.twig',
+            ['error' => 'Veuillez remplir les champs']);
     }
 
     #[Route('/category/remove/{id}', 'category_removed', ['id' => '\d+'])]
