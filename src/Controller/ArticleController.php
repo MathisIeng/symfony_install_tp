@@ -75,6 +75,8 @@ class ArticleController extends AbstractController
     public function createArticle(EntityManagerInterface $entityManager, Request $request): Response
     {
 
+        $error = null;
+
         // Si le formulaire a été soumis (requête POST)
         if ($request->isMethod('POST')) {
             // On récupère les données du formulaire
@@ -115,7 +117,7 @@ class ArticleController extends AbstractController
         }
 
         return $this->render('article_create.html.twig', [
-
+            'error' => $error
         ]);
     }
 

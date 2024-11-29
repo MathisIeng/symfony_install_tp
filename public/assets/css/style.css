@@ -31,7 +31,7 @@ body {
 
 /* Chaque article */
 .liHeader {
-    flex: 1 1 calc(20% - 20px); /* Chaque article occupe 50% de la largeur moins l'espacement */
+    flex: 1 1 calc(10% - 20px); /* Chaque article occupe 50% de la largeur moins l'espacement */
     background: rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
