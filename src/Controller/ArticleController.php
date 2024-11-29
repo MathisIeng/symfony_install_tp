@@ -88,6 +88,8 @@ class ArticleController extends AbstractController
 
         // On vérifie si le formulaire à été envoyé
         if ($form->isSubmitted() ) {
+            // On met de manière auto la date de création car on en veut pas
+            // qu'elle soit choisie par le user
             $article->setCreatedAt(new \DateTime());
             // On sauvegarde et on envoie
             $entityManager->persist($article);
@@ -129,51 +131,36 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/article/update/{id}', 'article_update', ['id' => '\d+'])]
-    // Nouvelle méthode pour mettre à jour un article en récupérant l'id correspondant
-        // à celui ci
     public function updateArticle(ArticleRepository $articleRepository, EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
-
-        $error = null;
-
+        // On récupère l'article correspondant à l'ID
         $article = $articleRepository->find($id);
 
-        // Si le formulaire a été soumis (requête POST)
-        if ($request->isMethod('POST')) {
-            // On récupère les données du formulaire
-            $title = $request->request->get('title');
-            $content = $request->request->get('content');
-            $image = $request->request->get('image');
+        // Création du formulaire basé sur ArticleType, pré-rempli avec les données de l'article
+        $form = $this->createForm(ArticleType::class, $article);
 
+        // Gestion de la requête (remplissage automatique du formulaire avec les données POST)
+        $form->handleRequest($request);
 
-            // Vérification simple si les champs sont vides
-            if (empty($title) || empty($content) || empty($image)) {
-                // Retourne à la même page avec un message d'erreur
-                return $this->render('article_update.html.twig',
-                    ['error' => 'Veuillez remplir les champs']);
-            }
-
-            // J'utilise les méthodes set pour associé une valeur
-            // à chacune de mes propritétés
-            $article->setTitle($title);
-            // Affecte le titre qui à été soumis dans le form
-            $article->setContent($content);
-            // Définit le contenu de l'article
-            $article->setImage($image);
-            // Associe une image
-
-            // Ajoute l'article à la gestion de Doctrine
+        // Vérification si le formulaire est soumis et valide
+        if ($form->isSubmitted()) {
+            // Sauvegarde des modifications dans la base de données
             $entityManager->persist($article);
-            // Exécute toutes les opérations en attente, ici on
-            // Enregistre l'article dans la BDD
             $entityManager->flush();
 
+            // Redirection vers une autre page
             return $this->redirectToRoute('articles_list');
-
         }
+
+        // Génération de la vue du formulaire
+        $formView = $form->createView();
+
         return $this->render('article_update.html.twig', [
-            'error' => $error, 'article' => $article,
+            // On passe le formulaire à Twig
+            'formView' => $formView,
+            'article' => $article,
         ]);
     }
+
 
 }

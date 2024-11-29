@@ -8,24 +8,6 @@
 
 {% block main %}
 
-    {% if error %}
+    {{ form(formView) }}
 
-        <p id="error">{{ error }}</p>
-
-    {% endif %}
-
-    <form method="POST" action="">
-
-        <label for="title">Titre</label>
-        <input type="text" id="title" name="title" value="{{ article.title }}" required>
-
-        <label for="content">Contenu</label>
-        <textarea id="content" name="content" required>{{ article.content }}</textarea>
-
-        <label for="image">Image</label>
-        <input type="text" id="image" name="image" value="{{ article.image }}">
-
-        <button type="submit">Modifier l'article</button>
-
-    </form>
 {% endblock main %}
