@@ -114,28 +114,46 @@ class CategoryController extends AbstractController
     #[Route('/category/update/{id}', 'category_update', ['id' => '\d+'])]
     // Nouvelle méthode pour mettre à jour une catégorie en récupérant l'id correspondant
         // à celle ci
-    public function updateCategory (EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, int $id) {
+    public function updateCategory (EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, int $id, Request $request) {
 
         // Ici, on viens trouver avec la fonction find l'id de la catégorie qu'on veut
         // modifier via le repository
         $category = $categoryRepository->find($id);
 
-        // dd($category);
-
         if (!$category) {
             return $this->redirectToRoute('not-found');
         }
 
-        // maj du titre de notre cat
-        $category->setTitle('RP maj');
-        // maj de la color de notre cat
-        $category->setColor('pink');
+        $error = null;
 
-        // on pre save notre cat
-        $entityManager->persist($category);
-        // on la push
-        $entityManager->flush();
+        // Je vérifie si la requête est en POST
+        if ($request->isMethod('POST')) {
+            $title = $request->request->get('title');
+            $color = $request->request->get('color');
 
-        return $this->redirectToRoute('categories_list');
+
+            // Vérification simple si les champs sont vides
+            if (empty($title) || empty($color)) {
+                // Retourne à la même page avec un message d'erreur
+                return $this->render('category_update.html.twig',
+                    ['error' => 'Veuillez remplir les champs']);
+            }
+
+            // On utilise set pour attribuer des valeurs à nos colonnes
+            // correspondantes
+            $category->setTitle($title);
+            $category->setColor($color);
+
+            // On ajoute la category à la gestion de Doctrine grâce à $entityManager
+            // "pre-sauvegarder"
+            $entityManager->persist($category);
+            // On l'insère dans notre BDD comme un push avec git
+            $entityManager->flush();
+
+            return $this->redirectToRoute('categories_list');
+        }
+
+        return $this->render('category_update.html.twig',
+            ['error' => $error, 'category' => $category]);
     }
 }

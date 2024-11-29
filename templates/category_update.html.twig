@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block metatitle %}
+
+    Modification de catégorie
+
+{% endblock metatitle %}
+
+{% block main %}
+
+    {% if error %}
+        <p id="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="">
+
+        <label for="title">Titre</label>
+        <input type="text" id="title" name="title" value="{{ category.title }}">
+
+        <label for="color">Couleur</label>
+        <input type="color" name="color" value="{{ category.color }}">
+
+        <button type="submit">Modifier la catégorie</button>
+
+    </form>
+
+{% endblock main %}
