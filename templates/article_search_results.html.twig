@@ -10,4 +10,17 @@
 
 <h1 id="titleHome">Toutes tes recherches pour "{{ search }}" :</h1>
 
+    <ul>
+        {# On crée une boucle for qui va parcourir tout les article de mon tableau articles
+        et afficher les valeurs des colonnes correspondantes à la recherche#}
+        {% for article in articles %}
+            <li>
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.content }}</p>
+                <img src="{{ article.image }}">
+            </li>
+        {% endfor %}
+    </ul>
+
+
 {% endblock main %}

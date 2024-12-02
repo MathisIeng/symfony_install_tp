@@ -61,14 +61,20 @@ class ArticleController extends AbstractController
         // Sans avoir besoin de crée nous même la nouvelle INSTANCE Request, on la met
         // en paramètre de notre méthode ainsi que notre variable (autowire)
         // De manière automatique
-    public function articleSearchResults(Request $request): Response
+    public function articleSearchResults(Request $request, ArticleRepository $articleRepository): Response
     {
+        // Récupération du paramètre search dans l'url
         $search = $request->query->get('search');
+
+        // Appel à la méthode depuis ArticleRepository qui interroge la bdd et
+        // récupère les articles correspondant à la recherche
+        $articles = $articleRepository->search($search);
 
         // On crée un nouvier fichier twig et on retourne notre méthode vers
         // Cette page
         return $this->render('article_search_results.html.twig', [
-            'search' => $search
+            'search' => $search, 'articles' => $articles
+            // On récupère bien la varibale $articles pour pouvoir l'utiliser dans notre twig
         ]);
     }
 
@@ -94,6 +100,9 @@ class ArticleController extends AbstractController
             // On sauvegarde et on envoie
             $entityManager->persist($article);
             $entityManager->flush();
+
+            // Redirection vers une autre page
+            return $this->redirectToRoute('articles_list');
         }
 
         $formView = $form->createView();

@@ -78,6 +78,9 @@ class CategoryController extends AbstractController
             // On sauvegarde et on envoie
             $entityManager->persist($category);
             $entityManager->flush();
+
+            // Redirection vers une autre page
+            return $this->redirectToRoute('categories_list');
         }
 
         $formView = $form->createView();
@@ -129,6 +132,9 @@ class CategoryController extends AbstractController
             // On sauvegarde et on envoie
             $entityManager->persist($category);
             $entityManager->flush();
+
+            // Redirection vers une autre page
+            return $this->redirectToRoute('categories_list');
         }
 
         $formView = $form->createView();

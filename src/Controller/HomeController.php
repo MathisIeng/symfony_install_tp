@@ -19,3 +19,20 @@ class HomeController extends AbstractController {
         return $this->render('home.html.twig');
     }
 }
+
+// TOUTES LES LIGNES DE COMMANDE NECESSAIRES POUR LE PROJET
+
+// Installez symfony : composer create-project symfony/skeleton nomduprojet
+// apache : composer require symfony/apache-pack
+// Annotations : composer require annotations
+// Crée un controller : bin/console make:controller NomDuController
+
+// DOCTRINE : composer require symfony/orm-pack - compose require --dev symfony/maker-bundle
+
+// BDD : php bin/console doctrine:database:create
+
+// ENTITY : php bin/console make:entity NomDeEntité
+// php bin/console make:migration
+// php bin/console doctrine:igrations:migrate
+
+// FORMULAIRE : bin/console make:form
